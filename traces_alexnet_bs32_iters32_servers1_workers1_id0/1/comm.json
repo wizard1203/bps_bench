@@ -1,0 +1,666 @@
+{
+    "traceEvents": [
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient",
+            "ts": 1589653253816533,
+            "dur": 717756,
+            "tid": "total",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient",
+            "ts": 1589653254558094,
+            "dur": 704597,
+            "tid": "total",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient",
+            "ts": 1589653255282989,
+            "dur": 708923,
+            "tid": "total",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient",
+            "ts": 1589653256008746,
+            "dur": 708855,
+            "tid": "total",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient",
+            "ts": 1589653256739743,
+            "dur": 705039,
+            "tid": "total",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient",
+            "ts": 1589653257469554,
+            "dur": 705218,
+            "tid": "total",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient",
+            "ts": 1589653258194674,
+            "dur": 704918,
+            "tid": "total",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient",
+            "ts": 1589653258914858,
+            "dur": 708932,
+            "tid": "total",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient",
+            "ts": 1589653259646794,
+            "dur": 702970,
+            "tid": "total",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient",
+            "ts": 1589653260368389,
+            "dur": 706074,
+            "tid": "total",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient",
+            "ts": 1589653261091538,
+            "dur": 706382,
+            "tid": "total",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.BROADCAST",
+            "ts": 1589653253997127,
+            "dur": 536992,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.BROADCAST",
+            "ts": 1589653254733451,
+            "dur": 529091,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.BROADCAST",
+            "ts": 1589653255459367,
+            "dur": 532058,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.BROADCAST",
+            "ts": 1589653256184788,
+            "dur": 532656,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.BROADCAST",
+            "ts": 1589653256913980,
+            "dur": 530561,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.BROADCAST",
+            "ts": 1589653257643689,
+            "dur": 530824,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.BROADCAST",
+            "ts": 1589653258369581,
+            "dur": 529860,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.BROADCAST",
+            "ts": 1589653259093336,
+            "dur": 530300,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.BROADCAST",
+            "ts": 1589653259819002,
+            "dur": 530614,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.BROADCAST",
+            "ts": 1589653260544356,
+            "dur": 529956,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.BROADCAST",
+            "ts": 1589653261267797,
+            "dur": 529961,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.COORDINATE_BROADCAST",
+            "ts": 1589653253996905,
+            "dur": 4,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.COORDINATE_BROADCAST",
+            "ts": 1589653254733207,
+            "dur": 3,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.COORDINATE_BROADCAST",
+            "ts": 1589653255459204,
+            "dur": 3,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.COORDINATE_BROADCAST",
+            "ts": 1589653256184599,
+            "dur": 4,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.COORDINATE_BROADCAST",
+            "ts": 1589653256913828,
+            "dur": 3,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.COORDINATE_BROADCAST",
+            "ts": 1589653257643534,
+            "dur": 2,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.COORDINATE_BROADCAST",
+            "ts": 1589653258369396,
+            "dur": 3,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.COORDINATE_BROADCAST",
+            "ts": 1589653259093205,
+            "dur": 3,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.COORDINATE_BROADCAST",
+            "ts": 1589653259818776,
+            "dur": 2,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.COORDINATE_BROADCAST",
+            "ts": 1589653260544126,
+            "dur": 3,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.COORDINATE_BROADCAST",
+            "ts": 1589653261267626,
+            "dur": 3,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.REDUCE",
+            "ts": 1589653253848533,
+            "dur": 148307,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.REDUCE",
+            "ts": 1589653254588118,
+            "dur": 145008,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.REDUCE",
+            "ts": 1589653255311402,
+            "dur": 147757,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.REDUCE",
+            "ts": 1589653256040267,
+            "dur": 144267,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.REDUCE",
+            "ts": 1589653256768785,
+            "dur": 144958,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.REDUCE",
+            "ts": 1589653257498395,
+            "dur": 145104,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.REDUCE",
+            "ts": 1589653258224407,
+            "dur": 144880,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.REDUCE",
+            "ts": 1589653258948447,
+            "dur": 144697,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.REDUCE",
+            "ts": 1589653259674495,
+            "dur": 144227,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.REDUCE",
+            "ts": 1589653260398923,
+            "dur": 145133,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.REDUCE",
+            "ts": 1589653261122825,
+            "dur": 144763,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.COORDINATE_REDUCE",
+            "ts": 1589653253846355,
+            "dur": 11,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.COORDINATE_REDUCE",
+            "ts": 1589653254584434,
+            "dur": 4,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.COORDINATE_REDUCE",
+            "ts": 1589653255311217,
+            "dur": 3,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.COORDINATE_REDUCE",
+            "ts": 1589653256037495,
+            "dur": 4,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.COORDINATE_REDUCE",
+            "ts": 1589653256765154,
+            "dur": 3,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.COORDINATE_REDUCE",
+            "ts": 1589653257496727,
+            "dur": 2,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.COORDINATE_REDUCE",
+            "ts": 1589653258221677,
+            "dur": 2,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.COORDINATE_REDUCE",
+            "ts": 1589653258942040,
+            "dur": 1,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.COORDINATE_REDUCE",
+            "ts": 1589653259672388,
+            "dur": 0,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.COORDINATE_REDUCE",
+            "ts": 1589653260396201,
+            "dur": 2,
+            "tid": "0",
+            "cat": "Comm"
+        },
+        {
+            "ph": "X",
+            "args": {
+                "name": "Comm.byteps.Whole.Gradient"
+            },
+            "pid": "Comm.byteps.Whole.Gradient",
+            "name": "Comm.byteps.Whole.Gradient.COORDINATE_REDUCE",
+            "ts": 1589653261119834,
+            "dur": 2,
+            "tid": "0",
+            "cat": "Comm"
+        }
+
+    ],
+    "displayTimeUnit": "ms"
+}

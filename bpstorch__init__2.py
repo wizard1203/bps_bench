@@ -145,7 +145,7 @@ class _DistributedOptimizer(torch.optim.Optimizer):
         return handle, ctx
 
     def _make_hook(self, p):
-        print("making hook  ====  \n")
+        #print("making hook  ====  \n")
         def hook(*ignore):
             if p in self._handles and self._handles[p][0] is not None:
                 if self._push_pull_delay[p] <= 0:
@@ -160,7 +160,7 @@ class _DistributedOptimizer(torch.optim.Optimizer):
                 name = self._parameter_names.get(p)
             # time.sleep(1)
             time_start = time.time()
-            print("In hook of Parameter: %s , start time: %s \n" % (name, time_start))
+            #print("In hook of Parameter: %s , start time: %s \n" % (name, time_start))
             assert not p.grad.requires_grad
             # assert self._push_pull_delay[p] > 0
             # handle, ctx = None, None
@@ -171,7 +171,7 @@ class _DistributedOptimizer(torch.optim.Optimizer):
             self._push_to_buffer(name, d_p)
             
             time_end = time.time()
-            print("In hook of Parameter: %s , end time: %s \n" % (name, time_end)) 
+            #print("In hook of Parameter: %s , end time: %s \n" % (name, time_end)) 
             # self._handles[p] = (handle, ctx)
         return hook
 

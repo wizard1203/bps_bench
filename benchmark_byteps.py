@@ -6,7 +6,8 @@ import torch.nn.functional as F
 import torch.optim as optim
 import torch.utils.data.distributed
 from torchvision import models
-import byteps.torch as bps
+#import byteps.torch as bps
+import bpstorch__init__2 as bps
 import timeit
 import time
 import numpy as np
@@ -59,7 +60,7 @@ strhdlr.setFormatter(formatter)
 
 relative_path = './bps_logs'
 
-logfile = os.path.join(relative_path, args.model+'-nworkers'+str(args.nworkers)+'-nservers'+str(args.nservers)+'.log')
+logfile = os.path.join(relative_path, args.model+'-bs'+str(args.batch_size)+'-iters'+str(args.num_iters)+'-nworkers'+str(args.nworkers)+'-nservers'+str(args.nservers)+'.log')
 
 hdlr = logging.FileHandler(logfile)
 hdlr.setFormatter(formatter)
@@ -150,8 +151,8 @@ with torch.autograd.profiler.profile(enable_profiling, True) as prof:
     for x in range(args.num_iters):
         # print("Iteration %d =================================" %(x))
         logger.info("Iteration %d =================================" %(x))
-        time = timeit.timeit(benchmark_step, number=args.num_batches_per_iter)
-        img_sec = args.batch_size * args.num_batches_per_iter / time
+        time_it = timeit.timeit(benchmark_step, number=args.num_batches_per_iter)
+        img_sec = args.batch_size * args.num_batches_per_iter / time_it
         log('Iter #%d: %.1f img/sec per %s' % (x, img_sec, device))
         img_secs.append(img_sec)
 
