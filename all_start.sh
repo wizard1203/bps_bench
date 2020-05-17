@@ -1,15 +1,18 @@
 directory=/home/esetstore/yxwang/bps_bench
 echo $directory
 
-n_server=1
-n_worker=1
+n_server=4
+n_worker=4
 n_scheduler=1
 
-#scheduler_ip=10.0.0.13
-scheduler_ip=192.168.0.19
+scheduler_ip=10.0.0.19
+#scheduler_ip=192.168.0.19
 scheduler_port=1234
 
-model=alexnet
+#model=alexnet
+#model=resnet50
+#model=vgg16
+model=densenet121
 
 worker_id=0
 

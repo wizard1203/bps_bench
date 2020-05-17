@@ -22,6 +22,8 @@ parser.add_argument('--fp16-pushpull', action='store_true', default=False,
 
 parser.add_argument('--model', type=str, default='resnet50',
                     help='model to benchmark')
+parser.add_argument('--DMLC-PS', type=str, default='aa',
+                    help='model to benchmark')
 parser.add_argument('--batch-size', type=int, default=32,
                     help='input batch size')
 
@@ -45,6 +47,8 @@ parser.add_argument('--nworkers', type=int, default=1,
                     help='aaa')
 parser.add_argument('--nservers', type=int, default=1,
                     help='aaa')
+parser.add_argument('--worker-id', type=int, default=1,
+                    help='aaa')
 
 args = parser.parse_args()
 args.cuda = not args.no_cuda and torch.cuda.is_available()
@@ -60,7 +64,7 @@ strhdlr.setFormatter(formatter)
 
 relative_path = './bps_logs'
 
-logfile = os.path.join(relative_path, args.model+'-bs'+str(args.batch_size)+'-iters'+str(args.num_iters)+'-nworkers'+str(args.nworkers)+'-nservers'+str(args.nservers)+'.log')
+logfile = os.path.join(relative_path, args.model+'-network'+str(args.DMLC_PS)+'-bs'+str(args.batch_size)+'-iters'+str(args.num_iters)+'-nworkers'+str(args.nworkers)+'-nservers'+str(args.nservers)+'id'+str(args.worker_id)+'.log')
 
 hdlr = logging.FileHandler(logfile)
 hdlr.setFormatter(formatter)
