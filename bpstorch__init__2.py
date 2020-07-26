@@ -169,7 +169,7 @@ class _DistributedOptimizer(torch.optim.Optimizer):
             #     handle, ctx = self._push_pull_grad_async(p)
             d_p = p.grad.data
             self._push_to_buffer(name, d_p)
-            
+            #print('aaaa') 
             time_end = time.time()
             #print("In hook of Parameter: %s , end time: %s \n" % (name, time_end)) 
             # self._handles[p] = (handle, ctx)
@@ -192,6 +192,8 @@ class _DistributedOptimizer(torch.optim.Optimizer):
         #     if not self._enable_async:
         #         p.grad.set_(self._compression.decompress(output, ctx))
         # handle, ctx = self._push_pull_grad_async(self.whole_gradient)
+        print("=======================================")
+        print("Length of self.whole_gradient: %d" % len(self.whole_gradient))
         tensor_compressed, ctx = self._compression.compress(self.whole_gradient)
         handle = byteps_push_pull(tensor_compressed, average=True, name="Whole.Gradient")
         output = synchronize(handle)

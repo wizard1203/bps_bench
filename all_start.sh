@@ -1,18 +1,31 @@
-directory=/home/esetstore/yxwang/bps_bench
+directory=/home/esetstore/yxwang/bps_test
 echo $directory
 
-n_server=4
+n_server=3
 n_worker=4
 n_scheduler=1
 
-scheduler_ip=10.0.0.19
+#scheduler_ip=10.0.0.19
+scheduler_ip=192.168.0.23
+#scheduler_ip=10.0.0.23
 #scheduler_ip=192.168.0.19
 scheduler_port=1234
 
 #model=alexnet
+#model_size=244403360   #243860512
+
 #model=resnet50
+#model_size=102228128   #184636672
+
 #model=vgg16
+#model_size=553430176  #553376512
+
 model=densenet121
+model_size=31915424  #31915424
+partition_size=`expr $model_size / $n_server + 1` 
+#partition_size=`expr $model_size / 10 + 1` 
+
+
 
 worker_id=0
 
@@ -45,7 +58,7 @@ for number in "${remotehosts[@]}"
 do
     host=gpu$number
     #echo $host
-    args="n_server=$n_server n_worker=$n_worker n_scheduler=$n_scheduler scheduler_ip=$scheduler_ip scheduler_port=$scheduler_port worker_id=$worker_id  model=$model bash start_worker.sh"
+    args="n_server=$n_server n_worker=$n_worker n_scheduler=$n_scheduler scheduler_ip=$scheduler_ip scheduler_port=$scheduler_port worker_id=$worker_id  model=$model partition_size=$partition_size bash start_worker.sh"
     cmd="cd $directory; $args"
     echo $host
     echo $cmd 

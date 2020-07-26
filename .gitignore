@@ -1,3 +1,9 @@
 trace*
 *.log
+*.swp
+*.swo
+*.swn
+*.gz
+nccl_result*
+
 
