@@ -7,6 +7,8 @@ import torch.optim as optim
 import torch.utils.data.distributed
 from torchvision import models
 #import byteps.torch as bps
+import torch as t
+print(t.version.cuda)
 import bpstorch__init__2 as bps
 import timeit
 import time

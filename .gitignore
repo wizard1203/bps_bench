@@ -3,7 +3,10 @@ trace*
 *.swp
 *.swo
 *.swn
+*.swl
+*.swm
 *.gz
 nccl_result*
+bps_logs*
 
 
