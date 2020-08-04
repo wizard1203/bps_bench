@@ -9,7 +9,12 @@ from torchvision import models
 #import byteps.torch as bps
 import torch as t
 print(t.version.cuda)
-import bpstorch__init__2 as bps
+
+whole_grad = False
+if not whole_grad:
+    import byteps.torch as bps
+else:
+    import bpstorch__init__2 as bps
 import timeit
 import time
 import numpy as np
@@ -22,6 +27,9 @@ parser = argparse.ArgumentParser(description='PyTorch Synthetic Benchmark',
 parser.add_argument('--fp16-pushpull', action='store_true', default=False,
                     help='use fp16 compression during byteps pushpull')
 
+parser.add_argument('--same', type=int, default=0,
+help='if using servers with workers on same machines')
+
 parser.add_argument('--model', type=str, default='resnet50',
                     help='model to benchmark')
 parser.add_argument('--DMLC-PS', type=str, default='aa',
@@ -33,7 +41,7 @@ parser.add_argument('--num-warmup-batches', type=int, default=10,
                     help='number of warm-up batches that don\'t count towards benchmark')
 parser.add_argument('--num-batches-per-iter', type=int, default=1,
                     help='number of batches per benchmark iteration')
-parser.add_argument('--num-iters', type=int, default=10,
+parser.add_argument('--num-iters', type=int, default=50,
                     help='number of benchmark iterations')
 parser.add_argument('--num-classes', type=int, default=1000,
                     help='number of classes')
@@ -64,7 +72,16 @@ logger.addHandler(strhdlr)
 formatter = logging.Formatter('%(asctime)s [%(filename)s:%(lineno)d] %(levelname)s %(message)s')
 strhdlr.setFormatter(formatter)
 
-relative_path = './bps_logs'
+if whole_grad:
+    relative_path = './bps_whole_grad'
+else:
+    relative_path = './bps_layerwise'
+
+if args.same == 1:
+    relative_path += '_same_log'
+else:
+    relative_path += '_log'
+
 
 logfile = os.path.join(relative_path, args.model+'-network'+str(args.DMLC_PS)+'-bs'+str(args.batch_size)+'-iters'+str(args.num_iters)+'-nworkers'+str(args.nworkers)+'-nservers'+str(args.nservers)+'id'+str(args.worker_id)+'.log')
 
@@ -161,6 +178,7 @@ with torch.autograd.profiler.profile(enable_profiling, True) as prof:
         img_sec = args.batch_size * args.num_batches_per_iter / time_it
         log('Iter #%d: %.1f img/sec per %s' % (x, img_sec, device))
         img_secs.append(img_sec)
+        logger.info('Iter #%d: %.1f img/sec per %s' % (x, img_sec, device))
 
 
 # Results
@@ -169,4 +187,10 @@ img_sec_conf = 1.96 * np.std(img_secs)
 log('Img/sec per %s: %.1f +-%.1f' % (device, img_sec_mean, img_sec_conf))
 log('Total img/sec on %d %s(s): %.1f +-%.1f' %
     (bps.size(), device, bps.size() * img_sec_mean, bps.size() * img_sec_conf))
+logger.info('Img/sec per %s: %.1f +-%.1f' % (device, img_sec_mean, img_sec_conf))
+logger.info('Total img/sec on %d %s(s): %.1f +-%.1f' %
+    (bps.size(), device, bps.size() * img_sec_mean, bps.size() * img_sec_conf))
+
+
+
 
