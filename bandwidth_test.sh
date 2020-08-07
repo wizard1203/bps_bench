@@ -14,39 +14,40 @@ if [ $if_tcp -eq 1 ]; then
     addr=`expr $server_number + 10`
     server_host=192.168.0.$addr
     #echo $host
-    args="iperf -s"
+    args="iperf3 -s"
     cmd="cd $directory; $args" 
     echo $server_host
     echo $cmd
     ssh $server_host $cmd &
-else
-    addr=`expr $server_number + 10`
-    server_host=10.0.0.$addr
-    #echo $host
-    args="ib_read_bw"
-    cmd="cd $directory; $args" 
-    echo $server_host
-    echo $cmd
-    ssh $server_host $cmd &
-fi
-
-
-for host_number in "${all_hosts[@]}"
-do 
-    if [ $host_number -eq $server_number ]; then
-        continue
-    fi
-
-    if [ $if_tcp -eq 1 ]; then
+    for host_number in "${all_hosts[@]}"
+    do 
+        if [ $host_number -eq $server_number ]; then
+            continue
+        fi
         addr=`expr $host_number + 10`
         host=192.168.0.$addr
         #echo $host
-        args="iperf -c $server_host > bandwidth_results/tcp-c-${host_number}-s-${server_number}.log"
+        args="iperf3 -c $server_host > bandwidth_results/tcp-c-${host_number}-s-${server_number}.log"
         cmd="cd $directory; $args" 
         echo $host
         echo $cmd
-        ssh $host $cmd &
-    else
+        ssh $host $cmd
+    done
+else
+    for host_number in "${all_hosts[@]}"
+    do 
+        if [ $host_number -eq $server_number ]; then
+            continue
+        fi
+        addr=`expr $server_number + 10`
+        server_host=10.0.0.$addr
+        #echo $host
+        args="ib_read_bw"
+        cmd="cd $directory; $args" 
+        echo $server_host
+        echo $cmd
+        ssh $server_host $cmd &
+
         addr=`expr $host_number + 10`
         host=10.0.0.$addr
         #echo $host
@@ -54,9 +55,37 @@ do
         cmd="cd $directory; $args" 
         echo $host
         echo $cmd
-        ssh $host $cmd &
-    fi
-done
+        ssh $host $cmd
+    done
+fi
+
+
+# for host_number in "${all_hosts[@]}"
+# do 
+#     if [ $host_number -eq $server_number ]; then
+#         continue
+#     fi
+
+#     if [ $if_tcp -eq 1 ]; then
+#         addr=`expr $host_number + 10`
+#         host=192.168.0.$addr
+#         #echo $host
+#         args="iperf -c $server_host > bandwidth_results/tcp-c-${host_number}-s-${server_number}.log"
+#         cmd="cd $directory; $args" 
+#         echo $host
+#         echo $cmd
+#         ssh $host $cmd &
+#     else
+#         addr=`expr $host_number + 10`
+#         host=10.0.0.$addr
+#         #echo $host
+#         args="ib_read_bw $server_host > bandwidth_results/rdma-c-${host_number}-s-${server_number}.log"
+#         cmd="cd $directory; $args" 
+#         echo $host
+#         echo $cmd
+#         ssh $host $cmd &
+#     fi
+# done
 
 
 
