@@ -14,7 +14,7 @@ from All_process import get_serialized_log
 #markers=['.','x','o','v','^','<','>','1','2','3','4','8','s','p','*']
 #markers=['.','x','o','v','^','<','>']
 markers=[None]
-colors = ['b', 'g', 'r', 'm', 'y', 'k', 'orange', 'purple', 'olive']
+colors = ['b', 'g', 'r', 'm', 'y', 'k', 'orange', 'purple', 'olive', 'azure', 'brown', 'khaki']
 #colors = colors[2:7]
 #colors = colors[0:4]
 colors = colors[0:8]
@@ -74,7 +74,7 @@ def plot_one_line(x_data, y_data, legend, scale=None, ax=None):
     ax.plot(x_data, y_data, label=legend, marker=marker, linewidth=LINE_WIDTH, markerfacecolor='none', color=color)
 
 
-def plot_figure(Data_Get_Configs, training_or_tensor, title, x_label, y_label, file_path):
+def plot_figure(Data_Get_Configs, training_or_tensor, title, x_label, y_label, file_path, legend_location, subplots_adjust):
     plt.figure()
     fig, ax = plt.subplots(1,1,figsize=(5,3.4))
 
@@ -92,16 +92,18 @@ def plot_figure(Data_Get_Configs, training_or_tensor, title, x_label, y_label, f
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
     ax.set_xlim(xmin=-1)
-    ax.legend(fontsize=FONTSIZE, loc='lower right')
+    ax.legend(fontsize=FONTSIZE, loc=legend_location)
     ax.grid(linestyle=':')
     u.update_fontsize(ax, FONTSIZE)
 
     #ax.legend().set_visible(False)
-    plt.subplots_adjust(bottom=0.16, left=0.15, right=0.96, top=0.95)
+    plt.subplots_adjust(bottom=subplots_adjust[0], left=subplots_adjust[1], right=subplots_adjust[2], top=subplots_adjust[3])
     # plt.savefig(file_path)
     plt.show()
 
 def plot_training_comm():
+    legend_location = 'lower right'
+    subplots_adjust = [0.16, 0.15, 0.96, 0.95]
 
     data_Get_Configs = []
     for DMLC_PS in ['10.0.0.11', '192.168.0.11']:
@@ -120,31 +122,54 @@ def plot_training_comm():
                 data_Get_Configs.append(data_Get_Config)
 
     file_path = './training_comm.pdf'
-    plot_figure(data_Get_Configs, training_or_tensor='training', title=None, x_label='servers', y_label='Img/sec', file_path=file_path)
+    plot_figure(data_Get_Configs, training_or_tensor='training', title=None, x_label='servers', y_label='Img/sec',
+         file_path=file_path, legend_location=legend_location, subplots_adjust=subplots_adjust)
 
 def plot_tensor_comm():
-
+    legend_location = 'upper right'
+    subplots_adjust = [0.16, 0.15, 0.96, 0.95]
     data_Get_Configs = []
 
+    # bps_logs0804
     # data_Get_Configs.append(u.Data_Get_Config(dir_path='bps_logs0804/one_tensor_test_log', model=[], tensor_size=['64'],
     #     DMLC_PS=['192.168.0.11'], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['1', '2', '3', '4', '5', '6', '7', '8'],
     #     worker_id=['0'], local_rank=['0'], x_data=['1', '2', '3', '4', '5', '6', '7', '8'], legend='192.168.0.11-tensor-size64'))
 
 
-    data_Get_Configs.append( u.Data_Get_Config(dir_path='bps_logs0804/one_tensor_test_log', model=[], tensor_size=['256'],
-        DMLC_PS=['10.0.0.11'], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['1', '2', '3', '4', '5', '6', '7', '8'],
-        worker_id=['0'], local_rank=['0'], x_data=['1', '2', '3', '4', '5', '6', '7', '8'], legend='10.0.0.11-tensor-size256'))
+    # data_Get_Configs.append( u.Data_Get_Config(dir_path='bps_logs0804/one_tensor_test_log', model=[], tensor_size=['256'],
+    #     DMLC_PS=['10.0.0.11'], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['1', '2', '3', '4', '5', '6', '7', '8'],
+    #     worker_id=['0'], local_rank=['0'], x_data=['1', '2', '3', '4', '5', '6', '7', '8'], legend='10.0.0.11-tensor-size256'))
 
     # data_Get_Configs.append( u.Data_Get_Config(dir_path='bps_logs0804/one_tensor_test_same_log', model=[], tensor_size=['64'],
     #     DMLC_PS=['192.168.0.11'], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['1', '2', '3', '4', '5', '6', '7', '8'],
     #     worker_id=['0'], local_rank=['0'], x_data=['1', '2', '3', '4', '5', '6', '7', '8'], legend='192.168.0.11-tensor-size64-same'))
 
-    data_Get_Configs.append( u.Data_Get_Config(dir_path='bps_logs0804/one_tensor_test_same_log', model=[], tensor_size=['256'],
-        DMLC_PS=['10.0.0.11'], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['1', '2', '3', '4', '5', '6', '7', '8'],
-        worker_id=['0'], local_rank=['0'], x_data=['1', '2', '3', '4', '5', '6', '7', '8'], legend='10.0.0.11-tensor-size256-same'))
+    # data_Get_Configs.append( u.Data_Get_Config(dir_path='bps_logs0804/one_tensor_test_same_log', model=[], tensor_size=['256'],
+    #     DMLC_PS=['10.0.0.11'], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['1', '2', '3', '4', '5', '6', '7', '8'],
+    #     worker_id=['0'], local_rank=['0'], x_data=['1', '2', '3', '4', '5', '6', '7', '8'], legend='10.0.0.11-tensor-size256-same'))
+
+    # bps_logs0807
+    for DMLC_PS in ['10.0.0.11', '192.168.0.11']:
+        #if DMLC_PS == '10.0.0.11':
+        if DMLC_PS == '192.168.0.11':
+            continue
+        for tensor_size in ['8', '16', '32', '64', '128', '256']:
+        #for tensor_size in ['8']:
+            for same in [' ', 'same']:
+                if same == 'same':
+                    legend = DMLC_PS+'-tensor-size' + str(tensor_size) + '-same'
+                    dir_path = 'bps_logs0807/one_tensor_test_same_log'
+                else:
+                    legend = DMLC_PS+'-tensor-size' + str(tensor_size)
+                    dir_path = 'bps_logs0807/one_tensor_test_log'
+                data_Get_Config = u.Data_Get_Config(dir_path=dir_path, model=[' '], tensor_size=[tensor_size],
+                    DMLC_PS=[DMLC_PS], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['1', '2', '3', '4', '5', '6', '7', '8'],
+                    worker_id=['0'], local_rank=['0'], x_data=['1', '2', '3', '4', '5', '6', '7', '8'], legend=legend)
+                data_Get_Configs.append(data_Get_Config)
 
     file_path = './tensor_comm.pdf'
-    plot_figure(data_Get_Configs, training_or_tensor='tensor', title=None, x_label='servers', y_label='Time (Seconds)', file_path=file_path)
+    plot_figure(data_Get_Configs, training_or_tensor='tensor', title=None, x_label='servers', y_label='Time (Seconds)',
+         file_path=file_path, legend_location=legend_location, subplots_adjust=subplots_adjust)
 
 
 #plot_training_comm()
