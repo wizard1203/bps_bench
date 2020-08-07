@@ -1,33 +1,35 @@
 directory=/home/esetstore/yxwang/bps_test
 echo $directory
 
-all_hosts=("2" "3" "4" "5" "6" "7" "8" "9" "10" "11" "12" "13" "14" "15" "16")
+all_hosts=("1" "2" "3" "4" "5" "6" "7" "8" "9" "10" "11" "12" "13" "14" "15" "16")
 
 
-if_tcp=1
+if_tcp=0
 
 
-server_number=2 # 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+server_number=15 # 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
 
 
 if [ $if_tcp -eq 1 ]; then
     addr=`expr $server_number + 10`
     server_host=192.168.0.$addr
     #echo $host
-    args="iperf3 -s"
+    args="iperf -s"
     cmd="cd $directory; $args" 
     echo $server_host
     echo $cmd
     ssh $server_host $cmd &
+
+    sleep 1s
     for host_number in "${all_hosts[@]}"
     do 
-        if [ $host_number -eq $server_number ]; then
+        if [ $host_number -le $server_number ]; then
             continue
         fi
         addr=`expr $host_number + 10`
         host=192.168.0.$addr
         #echo $host
-        args="iperf3 -c $server_host > bandwidth_results/tcp-c-${host_number}-s-${server_number}.log"
+        args="iperf -c $server_host > bandwidth_results/tcp-c-${host_number}-s-${server_number}.log"
         cmd="cd $directory; $args" 
         echo $host
         echo $cmd
@@ -36,7 +38,7 @@ if [ $if_tcp -eq 1 ]; then
 else
     for host_number in "${all_hosts[@]}"
     do 
-        if [ $host_number -eq $server_number ]; then
+        if [ $host_number -le $server_number ]; then
             continue
         fi
         addr=`expr $server_number + 10`
@@ -48,6 +50,7 @@ else
         echo $cmd
         ssh $server_host $cmd &
 
+        sleep 1s
         addr=`expr $host_number + 10`
         host=10.0.0.$addr
         #echo $host
