@@ -41,7 +41,7 @@ do
         addr=`expr $host_number + 10`
         host=192.168.0.$addr
         #echo $host
-        args="iperf -c $server_host > tcp-c-${host_number}-s-${server_number}.log"
+        args="iperf -c $server_host > bandwidth_results/tcp-c-${host_number}-s-${server_number}.log"
         cmd="cd $directory; $args" 
         echo $host
         echo $cmd
@@ -50,7 +50,7 @@ do
         addr=`expr $host_number + 10`
         host=10.0.0.$addr
         #echo $host
-        args="ib_read_bw $server_host > rdma-c-${host_number}-s-${server_number}.log"
+        args="ib_read_bw $server_host > bandwidth_results/rdma-c-${host_number}-s-${server_number}.log"
         cmd="cd $directory; $args" 
         echo $host
         echo $cmd
