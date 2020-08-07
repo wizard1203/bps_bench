@@ -3,7 +3,7 @@ export DMLC_ROLE=scheduler
 export DMLC_NUM_SERVER=$n_server
 export DMLC_PS_ROOT_URI=$scheduler_ip
 export DMLC_PS_ROOT_PORT=$scheduler_port
-export BYTEPS_SERVER_ENABLE_SCHEDULE=1
+#export BYTEPS_SERVER_ENABLE_SCHEDULE=1
 # echo $DMLC_PS_ROOT_URI
 #export DMLC_ENABLE_RDMA=0
 #export DMLC_INTERFACE=ib0

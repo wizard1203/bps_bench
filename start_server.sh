@@ -13,7 +13,7 @@ if [ $rdma -eq 1 ]; then
     export DMLC_INTERFACE=ib0
 fi
 
-export BYTEPS_SERVER_ENABLE_SCHEDULE=1
+#export BYTEPS_SERVER_ENABLE_SCHEDULE=1
 export BYTEPS_SERVER_ENGINE_THREAD=8
 # echo $DMLC_PS_ROOT_URI
 source ~/pytorch1.4/bin/activate

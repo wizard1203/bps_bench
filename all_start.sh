@@ -1,12 +1,18 @@
 directory=/home/esetstore/yxwang/bps_test
 echo $directory
 
-n_server=8
+n_server=8 #1  
 n_worker=8
 n_scheduler=1
-same=1
+same=0
 
 rdma=0
+# one_tensor test   *1024 * 1024 * 4
+tensorsize=256
+partition_size=`expr $tensorsize \* 1024 \* 1024 \* 4 / $n_server`
+
+#partition_size=`expr $tensorsize \* 1024 \* 1024 \* 4 / 1`
+
 
 if [ $rdma -eq 1 ]; then
     scheduler_ip=10.0.0.11
@@ -33,12 +39,9 @@ model_size=102228128   #184636672
 #model_size=31915424  #31915424
 
 #partition_size=`expr $model_size / $n_server + 1` 
-partition_size=4096000
+#partition_size=4096000
 #partition_size=1024000
 
-# one_tensor test   *1024 * 1024 * 4
-tensorsize=256
-#partition_size=`expr $tensorsize \* 1024 \* 1024 \* 4 / $n_server`
 
 
 #partition_size=`expr $tensorsize \* 1024 \* 1024 \* 4 / $n_server - 1 \* 1024 \* 1024 \* 4 \* 3 / 2`
