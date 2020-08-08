@@ -78,7 +78,7 @@ else:
     relative_path += '_log'
 
 
-logfile = os.path.join(relative_path, 'one_tensor_test_size'+str(args.tensor_size)+'-network'+str(args.DMLC_PS)+'-nworkers'+str(args.nworkers)+'-nservers'+str(args.nservers)+'worker'+str(args.worker_id)+'rank'+str(bps.local_rank())+'.log')
+logfile = os.path.join(relative_path, 'one_tensor_test_size'+str(args.tensor_size)+'KB-network'+str(args.DMLC_PS)+'-nworkers'+str(args.nworkers)+'-nservers'+str(args.nservers)+'worker'+str(args.worker_id)+'rank'+str(bps.local_rank())+'.log')
 
 
 hdlr = logging.FileHandler(logfile)
@@ -113,17 +113,19 @@ size = args.tensor_size
 #        print("tensor size %d B, iteration: %d, time: %.3f" %(1024*1024*size*4, i, end-start))
 #    results[1024*1024*size*4] = tensor_time/40 
 
-tensor = t.rand(1024, 1024, size)
+#tensor = t.rand(1024, 1024, size)
+tensor = t.rand(256, size)
 tensor = tensor.view(-1)
 tensor.cuda()
 tensor_time = 0
+bps.declare('OnlyTensor.'+'size'+str(size)+'KB')
 
 iter_times = []
 for i in range(iters):
     time.sleep(0.1)
     start = time.time()
     tensor_compressed, ctx = compression.compress(tensor)
-    handle = bps.byteps_push_pull(tensor_compressed, average=True, name='OnlyTensor.'+'size'+str(size))
+    handle = bps.byteps_push_pull(tensor_compressed, average=True, name='OnlyTensor.'+'size'+str(size)+'KB')
     output = bps.synchronize(handle)
     del handle
     #tensor = bps.push_pull(tensor)
@@ -131,12 +133,13 @@ for i in range(iters):
     if i > 10 and i < 51:
         tensor_time = end - start
         iter_times.append(tensor_time)
-    logger.info("tensor size %d B, iteration: %d, time: %.3f" %(1024*1024*size*4, i, end-start))
+    #logger.info("tensor size %d B, iteration: %d, time: %.3f" %(1024*1024*size*4, i, end-start))
+    logger.info("tensor size %d B, iteration: %d, time: %.8f" %(256*size*4, i, end-start))
     #print("tensor size %d B, iteration: %d, time: %.3f" %(1024*1024*size*4, i, end-start))
 #results[1024*1024*size*4] = tensor_time/40 
 
 print(iter_times)
 iter_times_mean = np.mean(iter_times)
 iter_times_conf = 1.96 * np.std(iter_times)
-logger.info('Rank: %d, Iter time: %.3f +-%.3f' % (bps.local_rank(), iter_times_mean, iter_times_conf))
+logger.info('Rank: %d, Iter time: %.8f +-%.8f' % (bps.local_rank(), iter_times_mean, iter_times_conf))
 

@@ -1,15 +1,25 @@
 directory=/home/esetstore/yxwang/bps_test
 echo $directory
 
-n_server=8 #1  
+n_server=8   #1  
 n_worker=8
 n_scheduler=1
-same=0
+same=1
 
-rdma=0
-# one_tensor test   *1024 * 1024 * 4
-tensorsize=256
-partition_size=`expr $tensorsize \* 1024 \* 1024 \* 4 / $n_server`
+rdma=1
+## one_tensor test   *1024 * 1024 * 4
+# on_tensor test * 256 * 4
+
+#tensorsize=256
+
+# should be le 128, cause the byteps will limit it to the PAGE_SIZE * 4
+# = 16K , if 8 servers, 128 K.
+tensorsize=8192   # 128, 512, 2048, 8192  KB
+
+partition_size=`expr $tensorsize \* 256 \* 4 / $n_server`
+#partition_size=10
+
+#partition_size=`expr $tensorsize \* 1024 \* 1024 \* 4 / $n_server`
 
 #partition_size=`expr $tensorsize \* 1024 \* 1024 \* 4 / 1`
 
