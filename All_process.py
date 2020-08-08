@@ -99,9 +99,15 @@ def extract_training_log(dir_path, model, DMLC_PS, batch_size, num_iters, nworke
 
 
 
-def extract_one_tensor_log(dir_path, tensor_size, DMLC_PS, batch_size, num_iters, nworkers, nservers, worker_id, local_rank):
-    file_name = 'one_tensor_test_size'+str(tensor_size)+'-network'+str(DMLC_PS)+'-nworkers'+ \
-        str(nworkers)+'-nservers'+str(nservers)+'worker'+str(worker_id)+'rank'+str(local_rank)+'.log'
+def extract_one_tensor_log(dir_path, tensor_size, KB, DMLC_PS, batch_size, num_iters, nworkers, nservers, worker_id, local_rank):
+    # file_name = 'one_tensor_test_size'+str(tensor_size)+'-network'+str(DMLC_PS)+'-nworkers'+ \
+    #     str(nworkers)+'-nservers'+str(nservers)+'worker'+str(worker_id)+'rank'+str(local_rank)+'.log'
+    if KB == '1':
+        file_name = 'one_tensor_test_size'+str(tensor_size)+'KB-network'+str(DMLC_PS)+'-nworkers'+ \
+            str(nworkers)+'-nservers'+str(nservers)+'worker'+str(worker_id)+'rank'+str(local_rank)+'.log'
+    else:
+        file_name = 'one_tensor_test_size'+str(tensor_size)+'-network'+str(DMLC_PS)+'-nworkers'+ \
+                str(nworkers)+'-nservers'+str(nservers)+'worker'+str(worker_id)+'rank'+str(local_rank)+'.log'
     logfile = os.path.join(dir_path, file_name)
     f = open(logfile, 'r')
 
@@ -112,7 +118,7 @@ def extract_one_tensor_log(dir_path, tensor_size, DMLC_PS, batch_size, num_iters
     f.close()
     return float(mean)
 
-def get_serialized_log(dir_path, training_or_tensor, model=[], tensor_size=[], DMLC_PS=[], batch_size=[], 
+def get_serialized_log(dir_path, training_or_tensor, model=[], tensor_size=[], KB='1', DMLC_PS=[], batch_size=[], 
     num_iters=[], nworkers=[], nservers=[], worker_id=[], local_rank=[]):
 
     data = []
@@ -135,7 +141,7 @@ def get_serialized_log(dir_path, training_or_tensor, model=[], tensor_size=[], D
                             for nservers_i in nservers:
                                 for worker_id_i in worker_id:
                                     for local_rank_i in local_rank:
-                                        data.append(extract_one_tensor_log(dir_path, tensor_size_i, DMLC_PS_i, batch_size_i, num_iters_i,
+                                        data.append(extract_one_tensor_log(dir_path, tensor_size_i, KB, DMLC_PS_i, batch_size_i, num_iters_i,
                                             nworkers_i, nservers_i, worker_id_i, local_rank_i))
     return data
 

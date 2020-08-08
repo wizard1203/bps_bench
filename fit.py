@@ -5,6 +5,10 @@ import numpy as np
 import xlrd
 from scipy.optimize import differential_evolution
 import warnings
+import utils as u
+import plot
+import itertools
+from All_process import get_serialized_log
 
 
 file_bps = './bps_logs/bps.xls'
@@ -233,6 +237,91 @@ print("len(pull) %d" %len(pull))
 # print(xishu[0])
 
 
+
+
+# ===================================================================================
+def get_tensor_comm_data(DMLC_PS, same):
+    y_tensor_comm_data = []
+    Size_tensor_commm = []
+    worker_num = []
+    server_num = []
+
+    # root_path = 'bps_logs0807_2'
+    # for tensor_size in ['512', '2048', '8192']:
+    # #for tensor_size in ['128', '512', '2048', '8192']:
+    # #for tensor_size in ['8', '16', '32', '64', '128', '256']:
+    # #for tensor_size in ['8']:
+    #     # for same in [' ', 'same']:
+    #     if same == 'same':
+    #         legend = DMLC_PS+'-tensor-size' + str(tensor_size) + '-same'
+    #         dir_path = root_path+'/one_tensor_test_same_log'
+    #     else:
+    #         legend = DMLC_PS+'-tensor-size' + str(tensor_size)
+    #         dir_path = root_path+'/one_tensor_test_log'
+    #     Data_Get_Config = u.Data_Get_Config(dir_path=dir_path, model=[' '], tensor_size=[tensor_size], KB='1',
+    #         DMLC_PS=[DMLC_PS], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['1', '2', '3', '4', '5', '6', '7', '8'],
+    #         worker_id=['0'], local_rank=['0'], x_data=['1', '2', '3', '4', '5', '6', '7', '8'], legend=legend)
+    #     # data_Get_Config = u.Data_Get_Config(dir_path=dir_path, model=[' '], tensor_size=[tensor_size],
+    #     #     DMLC_PS=[DMLC_PS], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['1', '2', '4', '8'],
+    #     #     worker_id=['0'], local_rank=['0'], x_data=['1', '2', '4', '8'], legend=legend)
+    #     # data_Get_Config = u.Data_Get_Config(dir_path=dir_path, model=[' '], tensor_size=[tensor_size],
+    #     #     DMLC_PS=[DMLC_PS], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['3', '5', '6', '7'],
+    #     #     worker_id=['0'], local_rank=['0'], x_data=['3', '5', '6', '7'], legend=legend)
+    #     # data_Get_Configs.append(data_Get_Config)
+    #     y_tensor_comm_data += get_serialized_log(Data_Get_Config.dir_path, training_or_tensor='tensor', model=Data_Get_Config.model, 
+    #         tensor_size=Data_Get_Config.tensor_size, KB=Data_Get_Config.KB, DMLC_PS=Data_Get_Config.DMLC_PS, 
+    #         batch_size=Data_Get_Config.batch_size, num_iters=Data_Get_Config.num_iters, 
+    #         nworkers=Data_Get_Config.nworkers, nservers=Data_Get_Config.nservers, 
+    #         worker_id=Data_Get_Config.worker_id, local_rank=Data_Get_Config.local_rank)
+    #     Size_tensor_commm += [int(tensor_size)*1024*8]*8
+    #     worker_num += [int('8')]*8
+    #     server_num += [ int(item) for item in ['1', '2', '3', '4', '5', '6', '7', '8'] ]
+
+    root_path = 'bps_logs0807'
+    #for tensor_size in ['8', '16', '32', '64', '128', '256']:
+    for tensor_size in ['32', '64', '128', '256']:
+        if same == 'same':
+            legend = DMLC_PS+'-tensor-size' + str(tensor_size) + '-same'
+            dir_path = root_path+'/one_tensor_test_same_log'
+        else:
+            legend = DMLC_PS+'-tensor-size' + str(tensor_size)
+            dir_path = root_path+'/one_tensor_test_log'
+        Data_Get_Config = u.Data_Get_Config(dir_path=dir_path, model=[' '], tensor_size=[tensor_size], KB='0',
+            DMLC_PS=[DMLC_PS], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['1', '2', '3', '4', '5', '6', '7', '8'],
+            worker_id=['0'], local_rank=['0'], x_data=['1', '2', '3', '4', '5', '6', '7', '8'], legend=legend)
+        # data_Get_Config = u.Data_Get_Config(dir_path=dir_path, model=[' '], tensor_size=[tensor_size],
+        #     DMLC_PS=[DMLC_PS], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['1', '2', '4', '8'],
+        #     worker_id=['0'], local_rank=['0'], x_data=['1', '2', '4', '8'], legend=legend)
+        # data_Get_Config = u.Data_Get_Config(dir_path=dir_path, model=[' '], tensor_size=[tensor_size],
+        #     DMLC_PS=[DMLC_PS], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['3', '5', '6', '7'],
+        #     worker_id=['0'], local_rank=['0'], x_data=['3', '5', '6', '7'], legend=legend)
+        # data_Get_Configs.append(data_Get_Config)
+        y_tensor_comm_data += get_serialized_log(Data_Get_Config.dir_path, training_or_tensor='tensor', model=Data_Get_Config.model, 
+            tensor_size=Data_Get_Config.tensor_size, KB=Data_Get_Config.KB, DMLC_PS=Data_Get_Config.DMLC_PS, 
+            batch_size=Data_Get_Config.batch_size, num_iters=Data_Get_Config.num_iters, 
+            nworkers=Data_Get_Config.nworkers, nservers=Data_Get_Config.nservers, 
+            worker_id=Data_Get_Config.worker_id, local_rank=Data_Get_Config.local_rank)
+        Size_tensor_commm += [int(tensor_size)*1024*1024*4*8]*8
+        worker_num += [int('8')]*8
+        server_num += [ int(item) for item in ['1', '2', '3', '4', '5', '6', '7', '8'] ]
+
+    return np.array(y_tensor_comm_data), np.array(Size_tensor_commm), np.array(worker_num), np.array(server_num)
+
+
+
+
+def tensor_comm_func(x, alpha, beta):
+    (Size_tensor_commm, worker_num, server_num) = x
+
+    # t_worker = alpha*server_num + beta*Size
+    # t_server = alpha*worker_num + beta*Size*worker_num/server_num
+
+    t_comm = 2 * (alpha*worker_num + beta*Size_tensor_commm*worker_num/server_num)
+
+    return t_comm
+
+
+
 def comm_func(x, tpsc_2, tpsc_server, synchronization, congestion, tcp_util, rdma_util, PCI_util, latency_tcp, latency_rdma, latency_local, process):
 
     (Size, bands, worker_num, server_num, latency_RDMA_account) = x
@@ -369,7 +458,151 @@ def bcast_func(x, tpsc_2, tpsc_server, synchronization, congestion, tcp_util, rd
 
 
 
-def fit(func, fit_name):
+def fit(func, fit_name, DMLC_PS='192.168.0.11', same=' '):
+    if fit_name == 'tensor_comm':
+
+        y, Size_tensor_commm, worker_num, server_num = get_tensor_comm_data(DMLC_PS=DMLC_PS, same=same)
+        print("len(Size_tensor_commm) %d" %len(Size_tensor_commm))
+        print("len(worker_num) %d" %len(worker_num))
+        print("len(server_num) %d" %len(server_num))
+        print("len(y) %d" %len(y))
+        x = np.stack([Size_tensor_commm, worker_num, server_num])
+
+        def sumOfSquaredError(parameterTuple):
+            warnings.filterwarnings("ignore") # do not print warnings by genetic algorithm
+            val = func(x, *parameterTuple)
+            return np.sum((y - val) ** 2.0)
+
+        def generate_Initial_Parameters():
+            # ([0.0000005, 1e-9, 1e-9, 0.0, 0.0, 0.5, 0.5, 0.0000005, 0.0], [1., 1., 1., 1., 1., 1., 1., 1., 1.])
+            parameterBounds = []
+
+            parameterBounds.append([0, 10.]) # seach bounds for alpha
+            parameterBounds.append([0, 10.]) # seach bounds for betta
+
+            # "seed" the numpy random number generator for repeatable results
+            result = differential_evolution(sumOfSquaredError, parameterBounds, seed=100)
+            return result.x
+
+
+        # param_bounds=([np.inf, 1],[np.inf,1])
+        #popt, pcov = optimize.curve_fit(func, x, y, bounds=([0.0005, 1e-9, 1e-9, 0.1, 0.1, 0.0, 0.0, 0.0005], [1., 1., 1., 5., 5., 1., 1., 1.]))
+        # popt, pcov = optimize.curve_fit(func, x, y, p0=np.asarray([0.001 , 10 / 2400000000, 10 / 2400000000, 0.5, 0.5, 0.75, 0.75, 0.001, 0.01]),
+        #     bounds=([0.0005, 1e-9, 1e-9, 0.0, 0.0, 0.5, 0.5, 0.0005, 0.0], [1., 1., 1., 1., 1., 1., 1., 1., 1.]))   31%
+
+
+        # popt, pcov = optimize.curve_fit(func, x, y, p0=np.asarray([0.00001 , 1e-7, 1e-7, 0.5, 0.5, 0.75, 0.75, 0.00001, 0.01]),
+        #     bounds=([0.0000005, 1e-9, 1e-9, 0.0, 0.0, 0.5, 0.5, 0.0000005, 0.0], [1., 1., 1., 1., 1., 1., 1., 1., 1.]))
+
+        # generate initial parameter values
+        geneticParameters = generate_Initial_Parameters()
+
+        # curve fit the test data
+        popt, pcov = optimize.curve_fit(func, x, y, geneticParameters, 
+            bounds=([0, 0], [10., 10.]))
+        # popt, pcov = optimize.curve_fit(func, x, y, geneticParameters, 
+        #     bounds=([1e-9, 1e-9, 0.0, 0.0, 0.9, 0.9, 0.9, 0.0000005, 0.0000005, 0.0000005, 0.0], [1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.]))
+
+        alpha, beta = tuple(popt)
+        # latency, tpsc_2, tpsc_server, synchronization, congestion, band_util, PCI_util, latency_local, process = tuple(popt)
+        # print(tuple(popt))
+
+        print("alpha : %s" % alpha)
+        print("beta : %s" % beta)
+
+
+
+
+
+        predict = func(x, alpha, beta)
+        # print("predict:",predict)
+        # print("real:",y)
+
+        error = predict - y
+        # print("error: %s" % error)
+        # print("all accuracy: %s" % (np.fabs(error/y)))
+        print("Fiting: %s network-%s-%s====================" % (fit_name, DMLC_PS, same))
+        print("loss: %f" % np.mean(np.fabs(error)))
+        print("error: %f %% " % np.mean(np.fabs(error/y)*100) )
+        print("===============================")
+
+        legend_location = 'upper right'
+        subplots_adjust = [0.16, 0.15, 0.96, 0.95]
+        data_Get_Configs = []
+
+        markers=['o','*']
+        #markers=['.','x','o','v','^','<','>']
+
+        colors = ['b', 'g', 'r', 'm', 'y', 'k', 'orange', 'purple', 'darkgreen', 'darkblue', 'brown', 'darkorange']
+        #colors = colors[2:7]
+        #colors = colors[0:4]
+        colors = colors[0:12]
+        markeriter = itertools.cycle(markers)
+        coloriter = itertools.cycle(colors)
+
+        root_path = 'bps_logs0807'
+        KB='0'
+
+        # root_path = 'bps_logs0807_2'
+        # KB='1'
+        #for tensor_size in ['512', '2048', '8192']:
+        #for tensor_size in ['128', '512', '2048', '8192']:
+        for tensor_size in ['32', '64', '128', '256']:
+        #for tensor_size in ['8', '16', '32', '64', '128', '256']:
+        #for tensor_size in ['8']:
+            if same == 'same':
+                legend = DMLC_PS+'-tensor-size' + str(tensor_size) + '-same'
+                dir_path = root_path+'/one_tensor_test_same_log'
+            else:
+                legend = DMLC_PS+'-tensor-size' + str(tensor_size)
+                dir_path = root_path+'/one_tensor_test_log'
+            Data_Get_Config = u.Data_Get_Config(dir_path=dir_path, model=[' '], tensor_size=[tensor_size], KB=KB,
+                DMLC_PS=[DMLC_PS], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['1', '2', '3', '4', '5', '6', '7', '8'],
+                worker_id=['0'], local_rank=['0'], x_data=['1', '2', '3', '4', '5', '6', '7', '8'], legend=legend)
+            # data_Get_Config = u.Data_Get_Config(dir_path=dir_path, model=[' '], tensor_size=[tensor_size],
+            #     DMLC_PS=[DMLC_PS], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['1', '2', '4', '8'],
+            #     worker_id=['0'], local_rank=['0'], x_data=['1', '2', '4', '8'], legend=legend)
+            # data_Get_Config = u.Data_Get_Config(dir_path=dir_path, model=[' '], tensor_size=[tensor_size],
+            #     DMLC_PS=[DMLC_PS], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['3', '5', '6', '7'],
+            #     worker_id=['0'], local_rank=['0'], x_data=['3', '5', '6', '7'], legend=legend)
+            y_data = get_serialized_log(Data_Get_Config.dir_path, training_or_tensor='tensor', model=Data_Get_Config.model, 
+                tensor_size=Data_Get_Config.tensor_size, KB=Data_Get_Config.KB, DMLC_PS=Data_Get_Config.DMLC_PS, 
+                batch_size=Data_Get_Config.batch_size, num_iters=Data_Get_Config.num_iters, 
+                nworkers=Data_Get_Config.nworkers, nservers=Data_Get_Config.nservers, 
+                worker_id=Data_Get_Config.worker_id, local_rank=Data_Get_Config.local_rank)
+            Data_Get_Config.y_data=y_data
+            color = next(coloriter)
+            Data_Get_Config.color = color
+            Data_Get_Config.marker = next(markeriter)
+            data_Get_Configs.append(Data_Get_Config)
+
+            legend_fit = legend + '-fit'
+            Data_Get_Config = u.Data_Get_Config(dir_path=dir_path, model=[' '], tensor_size=[tensor_size], KB=KB,
+                DMLC_PS=[DMLC_PS], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['1', '2', '3', '4', '5', '6', '7', '8'],
+                worker_id=['0'], local_rank=['0'], x_data=['1', '2', '3', '4', '5', '6', '7', '8'], legend=legend_fit)
+            # data_Get_Config = u.Data_Get_Config(dir_path=dir_path, model=[' '], tensor_size=[tensor_size],
+            #     DMLC_PS=[DMLC_PS], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['1', '2', '4', '8'],
+            #     worker_id=['0'], local_rank=['0'], x_data=['1', '2', '4', '8'], legend=legend)
+            # data_Get_Config = u.Data_Get_Config(dir_path=dir_path, model=[' '], tensor_size=[tensor_size],
+            #     DMLC_PS=[DMLC_PS], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['3', '5', '6', '7'],
+            #     worker_id=['0'], local_rank=['0'], x_data=['3', '5', '6', '7'], legend=legend)
+            Size_tensor_commm = np.array([int(tensor_size)*1024*1024*4*8]*8)
+            #Size_tensor_commm = np.array([int(tensor_size)*1024*8]*8)
+            worker_num = np.array([int('8')]*8)
+            server_num = np.array([int(item) for item in ['1', '2', '3', '4', '5', '6', '7', '8']])
+            x = np.stack([Size_tensor_commm, worker_num, server_num])
+            y_data = func(x, alpha, beta)
+            Data_Get_Config.y_data=y_data
+            Data_Get_Config.color = color
+            Data_Get_Config.marker = next(markeriter)
+            data_Get_Configs.append(Data_Get_Config)
+
+        file_path = './tensor_comm.pdf'
+        plot.plot_figure(data_Get_Configs, training_or_tensor='tensor', title=None, x_label='servers', y_label='Time (Seconds)',
+             file_path=file_path, legend_location=legend_location, subplots_adjust=subplots_adjust)
+        return
+
+
     x = np.stack([Size, bands, worker_num, server_num, latency_RDMA_account])
 
     if fit_name == 'Com_up':
@@ -454,15 +687,32 @@ def fit(func, fit_name):
     # print("all accuracy: %s" % (np.fabs(error/y)))
     print("Fiting: %s ====================" % fit_name)
     print("loss: %f" % np.mean(np.fabs(error)))
-    print("accuracy: %f" % np.mean(np.fabs(error/y)))
+    print("error: %f %%" % np.mean(np.fabs(error/y))*100 )
     print("===============================")
 
-# fit_name = 'pull' # 'bcast', 'local_reduce', 'pull', 'push', Com_up
+
+
+
+
+
+
+
+# '10.0.0.11', '192.168.0.11'
+# ' ', 'same'
+fit(tensor_comm_func, 'tensor_comm', DMLC_PS='10.0.0.11', same=' ')
+#fit(tensor_comm_func, 'tensor_comm', DMLC_PS='192.168.0.11', same=' ')
+fit(tensor_comm_func, 'tensor_comm', DMLC_PS='10.0.0.11', same='same')
+#fit(tensor_comm_func, 'tensor_comm', DMLC_PS='192.168.0.11', same='same')
+
+
+
+
+# fit_name = 'pull' # 'bcast', 'local_reduce', 'pull', 'push', Com_up 'tensor_comm'
 # fit(comm_func, 'Com_up')
-fit(bcast_func, 'bcast')
-fit(local_reduce_func, 'local_reduce')
-fit(pull_func, 'pull')
-fit(push_func, 'push',)
+#fit(bcast_func, 'bcast')
+#fit(local_reduce_func, 'local_reduce')
+#fit(pull_func, 'pull')
+#fit(push_func, 'push',)
 
 
 

@@ -19,11 +19,15 @@ def autolabel(rects, ax, label, rotation=90):
 
 
 class Data_Get_Config(object):
-    def __init__(self, dir_path, model, tensor_size, DMLC_PS, batch_size,
+    def __init__(self, dir_path, model, tensor_size, KB, DMLC_PS, batch_size,
         num_iters, nworkers, nservers, worker_id, local_rank, x_data, legend):
         self.dir_path = dir_path
         self.model = model
         self.tensor_size = tensor_size
+        if KB:
+            self.KB=KB
+        else:
+            self.KB=0
         self.DMLC_PS = DMLC_PS 
         self.batch_size = batch_size
         self.num_iters = num_iters
@@ -35,4 +39,7 @@ class Data_Get_Config(object):
         self.x_data = x_data
 
         self.legend = legend
+        self.y_data = None
 
+        self.color = None
+        self.marker = None

@@ -7,6 +7,7 @@ trace*
 *.swl
 *.swm
 *.gz
+*.pyc
 nccl_result*
 bps_logs*
 

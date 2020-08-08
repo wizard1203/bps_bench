@@ -11,13 +11,13 @@ import itertools
 import utils as u
 from All_process import get_serialized_log
 
-#markers=['.','x','o','v','^','<','>','1','2','3','4','8','s','p','*']
+markers=['.','x','o','v','^','<','>','1','2','3','4','8','s','p','*']
 #markers=['.','x','o','v','^','<','>']
-markers=[None]
-colors = ['b', 'g', 'r', 'm', 'y', 'k', 'orange', 'purple', 'olive', 'azure', 'brown', 'khaki']
+
+colors = ['b', 'g', 'r', 'm', 'y', 'k', 'orange', 'purple', 'darkgreen', 'darkblue', 'brown', 'darkorange']
 #colors = colors[2:7]
 #colors = colors[0:4]
-colors = colors[0:8]
+colors = colors[0:12]
 markeriter = itertools.cycle(markers)
 coloriter = itertools.cycle(colors)
 
@@ -56,7 +56,7 @@ def get_real_title(title):
     return STANDARD_TITLES.get(title, title)
 
 
-def plot_one_line(x_data, y_data, legend, scale=None, ax=None):
+def plot_one_line(x_data, y_data, legend, scale=None, ax=None, marker=None, color=None):
     new_y_data = []
     if scale:
         for item in y_data:
@@ -66,10 +66,10 @@ def plot_one_line(x_data, y_data, legend, scale=None, ax=None):
 
     print(legend, ":", max(y_data))
     #ax.set_title(get_real_title(title))
-    # marker = markeriter.next()
+    #marker = markeriter.next()
     # color = coloriter.next()
-    marker = next(markeriter)
-    color = next(coloriter)
+    # marker = next(markeriter)
+    # color = next(coloriter)
     #print('marker: ', marker)
     ax.plot(x_data, y_data, label=legend, marker=marker, linewidth=LINE_WIDTH, markerfacecolor='none', color=color)
 
@@ -82,12 +82,8 @@ def plot_figure(Data_Get_Configs, training_or_tensor, title, x_label, y_label, f
            plt.title(title)
 
     for Data_Get_Config in Data_Get_Configs:
-        y_data = get_serialized_log(Data_Get_Config.dir_path, training_or_tensor=training_or_tensor, model=Data_Get_Config.model, 
-            tensor_size=Data_Get_Config.tensor_size, DMLC_PS=Data_Get_Config.DMLC_PS, 
-            batch_size=Data_Get_Config.batch_size, num_iters=Data_Get_Config.num_iters, 
-            nworkers=Data_Get_Config.nworkers, nservers=Data_Get_Config.nservers, 
-            worker_id=Data_Get_Config.worker_id, local_rank=Data_Get_Config.local_rank)
-        plot_one_line(Data_Get_Config.x_data, y_data, Data_Get_Config.legend, scale=None, ax=ax)
+        plot_one_line(Data_Get_Config.x_data, Data_Get_Config.y_data, Data_Get_Config.legend, scale=None, ax=ax,
+            color=Data_Get_Config.color, marker=Data_Get_Config.marker)
 
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
@@ -101,7 +97,7 @@ def plot_figure(Data_Get_Configs, training_or_tensor, title, x_label, y_label, f
     # plt.savefig(file_path)
     plt.show()
 
-def plot_training_comm():
+def plot_training_comm(root_path):
     legend_location = 'lower right'
     subplots_adjust = [0.16, 0.15, 0.96, 0.95]
 
@@ -111,21 +107,31 @@ def plot_training_comm():
             for same in [' ', 'same']:
                 if same == 'same':
                     legend = DMLC_PS+'-'+model+'-layerwise' + '-same'
-                    dir_path = 'bps_logs0804/bps_layerwise_same_log'
+                    dir_path = root_path+'/bps_layerwise_same_log'
                 else:
                     legend = DMLC_PS+'-'+model+'-layerwise'
-                    dir_path = 'bps_logs0804/bps_layerwise_log'
+                    dir_path = root_path+'/bps_layerwise_log'
 
                 data_Get_Config = u.Data_Get_Config(dir_path=dir_path, model=[model], tensor_size=[],
                     DMLC_PS=[DMLC_PS], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['1', '2', '3', '4', '5', '6', '7', '8'],
                     worker_id=['0'], local_rank=['0'], x_data=['1', '2', '3', '4', '5', '6', '7', '8'], legend=legend)
+                data_Get_Config.color = next(coloriter)
+                data_Get_Config.marker = next(markeriter)
                 data_Get_Configs.append(data_Get_Config)
 
     file_path = './training_comm.pdf'
+    for Data_Get_Config in Data_Get_Configs:
+        y_data = get_serialized_log(Data_Get_Config.dir_path, training_or_tensor=training_or_tensor, model=Data_Get_Config.model, 
+            tensor_size=Data_Get_Config.tensor_size, KB=Data_Get_Config.KB, DMLC_PS=Data_Get_Config.DMLC_PS, 
+            batch_size=Data_Get_Config.batch_size, num_iters=Data_Get_Config.num_iters, 
+            nworkers=Data_Get_Config.nworkers, nservers=Data_Get_Config.nservers, 
+            worker_id=Data_Get_Config.worker_id, local_rank=Data_Get_Config.local_rank)
+        Data_Get_Config.y_data=y_data
+
     plot_figure(data_Get_Configs, training_or_tensor='training', title=None, x_label='servers', y_label='Img/sec',
          file_path=file_path, legend_location=legend_location, subplots_adjust=subplots_adjust)
 
-def plot_tensor_comm():
+def plot_tensor_comm(root_path):
     legend_location = 'upper right'
     subplots_adjust = [0.16, 0.15, 0.96, 0.95]
     data_Get_Configs = []
@@ -148,23 +154,91 @@ def plot_tensor_comm():
     #     DMLC_PS=['10.0.0.11'], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['1', '2', '3', '4', '5', '6', '7', '8'],
     #     worker_id=['0'], local_rank=['0'], x_data=['1', '2', '3', '4', '5', '6', '7', '8'], legend='10.0.0.11-tensor-size256-same'))
 
-    # bps_logs0807
+
     for DMLC_PS in ['10.0.0.11', '192.168.0.11']:
         #if DMLC_PS == '10.0.0.11':
         if DMLC_PS == '192.168.0.11':
-            continue
-        for tensor_size in ['8', '16', '32', '64', '128', '256']:
+            pass
+            #continue
+        for tensor_size in ['512', '2048', '8192']:
+        #for tensor_size in ['128', '512', '2048', '8192']:
+        #for tensor_size in ['8', '16', '32', '64', '128', '256']:
         #for tensor_size in ['8']:
             for same in [' ', 'same']:
                 if same == 'same':
                     legend = DMLC_PS+'-tensor-size' + str(tensor_size) + '-same'
-                    dir_path = 'bps_logs0807/one_tensor_test_same_log'
+                    dir_path = root_path+'/one_tensor_test_same_log'
                 else:
                     legend = DMLC_PS+'-tensor-size' + str(tensor_size)
-                    dir_path = 'bps_logs0807/one_tensor_test_log'
-                data_Get_Config = u.Data_Get_Config(dir_path=dir_path, model=[' '], tensor_size=[tensor_size],
+                    dir_path = root_path+'/one_tensor_test_log'
+                data_Get_Config = u.Data_Get_Config(dir_path=dir_path, model=[' '], tensor_size=[tensor_size], KB='1',
                     DMLC_PS=[DMLC_PS], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['1', '2', '3', '4', '5', '6', '7', '8'],
                     worker_id=['0'], local_rank=['0'], x_data=['1', '2', '3', '4', '5', '6', '7', '8'], legend=legend)
+                # data_Get_Config = u.Data_Get_Config(dir_path=dir_path, model=[' '], tensor_size=[tensor_size],
+                #     DMLC_PS=[DMLC_PS], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['1', '2', '4', '8'],
+                #     worker_id=['0'], local_rank=['0'], x_data=['1', '2', '4', '8'], legend=legend)
+                # data_Get_Config = u.Data_Get_Config(dir_path=dir_path, model=[' '], tensor_size=[tensor_size],
+                #     DMLC_PS=[DMLC_PS], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['3', '5', '6', '7'],
+                #     worker_id=['0'], local_rank=['0'], x_data=['3', '5', '6', '7'], legend=legend)
+                data_Get_Config.color = next(coloriter)
+                data_Get_Config.marker = next(markeriter)
+                data_Get_Configs.append(data_Get_Config)
+
+    file_path = './tensor_comm.pdf'
+    plot_figure(data_Get_Configs, training_or_tensor='tensor', title=None, x_label='servers', y_label='Time (Seconds)',
+         file_path=file_path, legend_location=legend_location, subplots_adjust=subplots_adjust)
+
+def plot_tensor_comm_with_size(root_path):
+    legend_location = 'lower right'
+    subplots_adjust = [0.16, 0.15, 0.96, 0.95]
+    data_Get_Configs = []
+
+    # bps_logs0804
+    # data_Get_Configs.append(u.Data_Get_Config(dir_path='bps_logs0804/one_tensor_test_log', model=[], tensor_size=['64'],
+    #     DMLC_PS=['192.168.0.11'], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['1', '2', '3', '4', '5', '6', '7', '8'],
+    #     worker_id=['0'], local_rank=['0'], x_data=['1', '2', '3', '4', '5', '6', '7', '8'], legend='192.168.0.11-tensor-size64'))
+
+
+    # data_Get_Configs.append( u.Data_Get_Config(dir_path='bps_logs0804/one_tensor_test_log', model=[], tensor_size=['256'],
+    #     DMLC_PS=['10.0.0.11'], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['1', '2', '3', '4', '5', '6', '7', '8'],
+    #     worker_id=['0'], local_rank=['0'], x_data=['1', '2', '3', '4', '5', '6', '7', '8'], legend='10.0.0.11-tensor-size256'))
+
+    # data_Get_Configs.append( u.Data_Get_Config(dir_path='bps_logs0804/one_tensor_test_same_log', model=[], tensor_size=['64'],
+    #     DMLC_PS=['192.168.0.11'], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['1', '2', '3', '4', '5', '6', '7', '8'],
+    #     worker_id=['0'], local_rank=['0'], x_data=['1', '2', '3', '4', '5', '6', '7', '8'], legend='192.168.0.11-tensor-size64-same'))
+
+    # data_Get_Configs.append( u.Data_Get_Config(dir_path='bps_logs0804/one_tensor_test_same_log', model=[], tensor_size=['256'],
+    #     DMLC_PS=['10.0.0.11'], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['1', '2', '3', '4', '5', '6', '7', '8'],
+    #     worker_id=['0'], local_rank=['0'], x_data=['1', '2', '3', '4', '5', '6', '7', '8'], legend='10.0.0.11-tensor-size256-same'))
+
+
+    for DMLC_PS in ['10.0.0.11', '192.168.0.11']:
+        #if DMLC_PS == '10.0.0.11':
+        if DMLC_PS == '192.168.0.11':
+            pass
+            #continue
+        for tensor_size in ['512', '2048', '8192']:
+        #for tensor_size in ['128', '512', '2048', '8192']:
+        #for tensor_size in ['8', '16', '32', '64', '128', '256']:
+        #for tensor_size in ['8']:
+            for same in [' ', 'same']:
+                if same == 'same':
+                    legend = DMLC_PS+'-tensor-size' + str(tensor_size) + '-same'
+                    dir_path = root_path+'/one_tensor_test_same_log'
+                else:
+                    legend = DMLC_PS+'-tensor-size' + str(tensor_size)
+                    dir_path = root_path+'/one_tensor_test_log'
+                data_Get_Config = u.Data_Get_Config(dir_path=dir_path, model=[' '], tensor_size=[tensor_size], KB='1',
+                    DMLC_PS=[DMLC_PS], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['1', '2', '3', '4', '5', '6', '7', '8'],
+                    worker_id=['0'], local_rank=['0'], x_data=['1', '2', '3', '4', '5', '6', '7', '8'], legend=legend)
+                # data_Get_Config = u.Data_Get_Config(dir_path=dir_path, model=[' '], tensor_size=[tensor_size],
+                #     DMLC_PS=[DMLC_PS], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['1', '2', '4', '8'],
+                #     worker_id=['0'], local_rank=['0'], x_data=['1', '2', '4', '8'], legend=legend)
+                # data_Get_Config = u.Data_Get_Config(dir_path=dir_path, model=[' '], tensor_size=[tensor_size],
+                #     DMLC_PS=[DMLC_PS], batch_size=['64'], num_iters=['55'], nworkers=['8'], nservers=['3', '5', '6', '7'],
+                #     worker_id=['0'], local_rank=['0'], x_data=['3', '5', '6', '7'], legend=legend)
+                data_Get_Config.color = next(coloriter)
+                data_Get_Config.marker = next(markeriter)
                 data_Get_Configs.append(data_Get_Config)
 
     file_path = './tensor_comm.pdf'
@@ -172,11 +246,14 @@ def plot_tensor_comm():
          file_path=file_path, legend_location=legend_location, subplots_adjust=subplots_adjust)
 
 
+
+
+#root_path='bps_logs0807_2'
 #plot_training_comm()
 
-plot_tensor_comm()
+#plot_tensor_comm(root_path)
 
-
+plot_tensor_comm_with_size()
 
 
 
