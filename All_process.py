@@ -1,6 +1,6 @@
 import os
 import xlwt
-
+import numpy as np
 str1 = './bps_logs/alexnet-bs32-iters16-nworkers1-nservers1id0.log'
 dir_path = './bps_logs/'
 
@@ -99,6 +99,31 @@ def extract_training_log(dir_path, model, DMLC_PS, batch_size, num_iters, nworke
 
 
 
+def extract_one_tensor_Iter_Time_log(dir_path, training_or_tensor, model=[], tensor_size=[], KB='1', DMLC_PS=[], batch_size=[], 
+    num_iters=[], nworkers=[], nservers=[], worker_id=[], local_rank=[]):
+    # file_name = 'one_tensor_test_size'+str(tensor_size)+'-network'+str(DMLC_PS)+'-nworkers'+ \
+    #     str(nworkers)+'-nservers'+str(nservers)+'worker'+str(worker_id)+'rank'+str(local_rank)+'.log'
+    if KB == '1':
+        file_name = 'one_tensor_test_size'+str(tensor_size)+'KB-network'+str(DMLC_PS)+'-nworkers'+ \
+            str(nworkers)+'-nservers'+str(nservers)+'worker'+str(worker_id)+'rank'+str(local_rank)+'.log'
+    else:
+        file_name = 'one_tensor_test_size'+str(tensor_size)+'-network'+str(DMLC_PS)+'-nworkers'+ \
+                str(nworkers)+'-nservers'+str(nservers)+'worker'+str(worker_id)+'rank'+str(local_rank)+'.log'
+    logfile = os.path.join(dir_path, file_name)
+    if not os.path.exists(logfile):
+        return 0.0
+
+    f = open(logfile, 'r')
+    iter_times = []
+    for line in f.readlines():
+        if line.find('iteration:') > 0:
+            items = line.split('iteration:')[1].strip().split()
+            iter_time = float(items[-1].strip())
+            iter_times.append(iter_time)
+    f.close()
+    return iter_times
+
+
 def extract_one_tensor_log(dir_path, tensor_size, KB, DMLC_PS, batch_size, num_iters, nworkers, nservers, worker_id, local_rank):
     # file_name = 'one_tensor_test_size'+str(tensor_size)+'-network'+str(DMLC_PS)+'-nworkers'+ \
     #     str(nworkers)+'-nservers'+str(nservers)+'worker'+str(worker_id)+'rank'+str(local_rank)+'.log'
@@ -109,14 +134,47 @@ def extract_one_tensor_log(dir_path, tensor_size, KB, DMLC_PS, batch_size, num_i
         file_name = 'one_tensor_test_size'+str(tensor_size)+'-network'+str(DMLC_PS)+'-nworkers'+ \
                 str(nworkers)+'-nservers'+str(nservers)+'worker'+str(worker_id)+'rank'+str(local_rank)+'.log'
     logfile = os.path.join(dir_path, file_name)
+    if not os.path.exists(logfile):
+        return 0.0
+
     f = open(logfile, 'r')
 
+    iter_times = []
+    for line in f.readlines():
+        if line.find('iteration:') > 0:
+            items = line.split('iteration:')[1].strip().split()
+            iter_time = float(items[-1].strip())
+            iter_times.append(iter_time)
+
+    iter_times = iter_times[-52:-1]
+    origin_mean = np.mean(iter_times[10:50])
+    origin_std = np.std(iter_times[10:50])
+    # print("origin_mean: %f" % origin_mean)
+    # print("origin_std: %f" % origin_std)
+    y_data_adjust = [ item if item < origin_mean + 0*origin_std and item > origin_mean - 3*origin_std else origin_mean for item in iter_times ]
+    new_mean = np.mean(y_data_adjust)
+    new_std = np.std(y_data_adjust)
+    # print("new_mean: %f" % new_mean)
+    # print("new_std: %f" % new_std)
+    y_data_adjust = [ item if item < new_mean + 0*new_std and item > new_mean - 3*new_std else new_mean for item in iter_times ]
+    new_mean = np.mean(y_data_adjust)
+    new_std = np.std(y_data_adjust)
+
+    f.close()
+
+    # ==========================================
+    f = open(logfile, 'r')
     for line in f.readlines():
         if line.find('Iter time:') > 0:
             items = line.split('Iter time:')
-            mean = items[-1].strip().split()[0]
+            mean_in_file = float(items[-1].strip().split()[0])
+
+    # print("mean in file: %f" % mean_in_file)
+    # print("=============================")
+
     f.close()
-    return float(mean)
+    return float(new_mean)
+
 
 def get_serialized_log(dir_path, training_or_tensor, model=[], tensor_size=[], KB='1', DMLC_PS=[], batch_size=[], 
     num_iters=[], nworkers=[], nservers=[], worker_id=[], local_rank=[]):
