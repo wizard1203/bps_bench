@@ -10,17 +10,6 @@ from torchvision import models
 import torch as t
 print(t.version.cuda)
 
-whole_grad = False
-if not whole_grad:
-    import byteps.torch as bps
-else:
-    import bpstorch__init__2 as bps
-import timeit
-import time
-import numpy as np
-import os, sys
-import logging
-
 # Benchmark settings
 parser = argparse.ArgumentParser(description='PyTorch Synthetic Benchmark',
                                  formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -28,7 +17,9 @@ parser.add_argument('--fp16-pushpull', action='store_true', default=False,
                     help='use fp16 compression during byteps pushpull')
 
 parser.add_argument('--same', type=int, default=0,
-help='if using servers with workers on same machines')
+    help='if using servers with workers on same machines')
+parser.add_argument('--whole-grad', action='store_true', default=False,
+    help='set whole grad')
 
 parser.add_argument('--model', type=str, default='resnet50',
                     help='model to benchmark')
@@ -72,7 +63,21 @@ logger.addHandler(strhdlr)
 formatter = logging.Formatter('%(asctime)s [%(filename)s:%(lineno)d] %(levelname)s %(message)s')
 strhdlr.setFormatter(formatter)
 
-if whole_grad:
+# whole_grad = False
+if not args.whole_grad:
+    print("not whole_grad")
+    import byteps.torch as bps
+else:
+    print("whole_grad")
+    import bpstorch__init__2 as bps
+import timeit
+import time
+import numpy as np
+import os, sys
+import logging
+
+
+if args.whole_grad:
     relative_path = './bps_whole_grad'
 else:
     relative_path = './bps_layerwise'

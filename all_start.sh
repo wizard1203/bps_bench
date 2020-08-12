@@ -1,22 +1,23 @@
 directory=/home/esetstore/yxwang/bps_test
 echo $directory
 
-n_server=8   #1  
+n_server=1   #1  
 n_worker=8
 n_scheduler=1
-same=1
+same=0
 
-rdma=1
+rdma=0
 ## one_tensor test   *1024 * 1024 * 4
 # on_tensor test * 256 * 4
 
 #tensorsize=256
 
 # should be le 128, cause the byteps will limit it to the PAGE_SIZE * 4
-# = 16K , if 8 servers, 128 K.
-tensorsize=8192   # 128, 512, 2048, 8192  KB
+# = 16K , if 8 servers, 128 K. ! 128 has problems, should be 512
+#tensorsize=1024   #  512, 1024, 2048      KB
+tensorsize=`expr 256 \* 1024 \* 4` # x * 1024 * 4  # 1, 2 ,4 ,8 16 32 64 128 256
 
-partition_size=`expr $tensorsize \* 256 \* 4 / $n_server`
+#partition_size=`expr $tensorsize \* 256 \* 4 / $n_server`
 #partition_size=10
 
 #partition_size=`expr $tensorsize \* 1024 \* 1024 \* 4 / $n_server`
@@ -36,6 +37,7 @@ fi
 #scheduler_ip=192.168.0.19
 scheduler_port=1234
 
+whole_grad=true
 #model=alexnet
 #model_size=244403360   #243860512
 
@@ -48,7 +50,7 @@ model_size=102228128   #184636672
 #model=densenet121
 #model_size=31915424  #31915424
 
-#partition_size=`expr $model_size / $n_server + 1` 
+partition_size=`expr $model_size / $n_server + 1` 
 #partition_size=4096000
 #partition_size=1024000
 
@@ -109,7 +111,7 @@ do
     addr=`expr $number + 10`
     host=192.168.0.$addr
      #echo $host
-    args="rdma=$rdma n_server=$n_server n_worker=$n_worker n_scheduler=$n_scheduler scheduler_ip=$scheduler_ip scheduler_port=$scheduler_port worker_id=$worker_id  model=$model tensorsize=$tensorsize partition_size=$partition_size same=$same  bash start_worker.sh"
+    args="rdma=$rdma n_server=$n_server n_worker=$n_worker n_scheduler=$n_scheduler scheduler_ip=$scheduler_ip scheduler_port=$scheduler_port worker_id=$worker_id  model=$model tensorsize=$tensorsize partition_size=$partition_size same=$same whole_grad=$whole_grad bash start_worker.sh"
     cmd="cd $directory; $args"
     echo $host
     echo $cmd 
