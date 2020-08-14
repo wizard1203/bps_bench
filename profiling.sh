@@ -5,7 +5,9 @@ cd $directory
 
 
 model=alexnet
-model=resnet50
+#model=resnet50
+model=vgg16
+#model=densenet121
 
 #export BYTEPS_SERVER_ENABLE_SCHEDULE=1
 export BYTEPS_PARTITION_BYTES=$partition_size 

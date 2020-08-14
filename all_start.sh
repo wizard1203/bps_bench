@@ -4,9 +4,9 @@ echo $directory
 n_server=1   #1  
 n_worker=8
 n_scheduler=1
-same=0
+same=1
 
-rdma=0
+rdma=1
 ## one_tensor test   *1024 * 1024 * 4
 # on_tensor test * 256 * 4
 
@@ -38,11 +38,11 @@ fi
 scheduler_port=1234
 
 whole_grad=true
-#model=alexnet
-#model_size=244403360   #243860512
+model=alexnet
+model_size=244403360   #243860512
 
-model=resnet50
-model_size=102228128   #184636672
+#model=resnet50
+#model_size=102228128   #184636672
 
 #model=vgg16
 #model_size=553430176  #553376512
@@ -50,7 +50,7 @@ model_size=102228128   #184636672
 #model=densenet121
 #model_size=31915424  #31915424
 
-partition_size=`expr $model_size / $n_server + 1` 
+#partition_size=`expr $model_size / $n_server + 1` 
 #partition_size=4096000
 #partition_size=1024000
 
@@ -59,12 +59,32 @@ partition_size=`expr $model_size / $n_server + 1`
 #partition_size=`expr $tensorsize \* 1024 \* 1024 \* 4 / $n_server - 1 \* 1024 \* 1024 \* 4 \* 3 / 2`
 
 
-echo $partition_size
 #partition_size=`expr $model_size / 10 + 1` 
 
 
-
+for model in alexnet resnet50 vgg16 densenet121
+do
+case $model in
+    alexnet)
+        model_size=244403360
+        ;;
+    resnet50)
+        model_size=102228128
+        ;;
+    vgg16)
+        model_size=553430176
+        ;;
+    densenet121)
+        model_size=31915424
+        ;;
+esac
+for n_server in 1 2 3 4 5 6 7 8
+#for n_server in 8
+do
 worker_id=0
+partition_size=`expr $model_size / $n_server + 1` 
+echo $partition_size
+
 
 source net_config/scheduler_${n_scheduler}.conf
 for number in "${remotehosts[@]}"
@@ -116,11 +136,20 @@ do
     echo $host
     echo $cmd 
     ssh $host $cmd &
+    #if [ $number -eq 16 ]; then
+    #    ssh $host $cmd &
+    #else
+    #    ssh $host $cmd &
+    #fi
     worker_id=$(expr $worker_id + 1)
 done
+wait
+bash $directory/kallps.sh
+wait
+sleep 5s
 
-
-
+done
+done
 
 
 

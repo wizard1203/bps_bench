@@ -16,6 +16,7 @@ import torch.optim as optim
 print(t.version.cuda)
 import os, sys
 import logging
+import argparse
 
 class Profiling(object):
     def __init__(self, model):
@@ -252,7 +253,7 @@ if __name__ == '__main__':
         relative_path = './bps_whole_grad'
     else:
         relative_path = './bps_layerwise'
-    relative_path += 'single_train_log'
+    relative_path += '_single_train_log'
 
     logfile = os.path.join(relative_path, args.model+'-network'+str(args.DMLC_PS)+'-bs'+str(args.batch_size)+'-iters'+str(args.num_iters)+'.log')
     hdlr = logging.FileHandler(logfile)
@@ -261,6 +262,9 @@ if __name__ == '__main__':
     logger.info('Configurations: %s', args)
 
     model = getattr(models, args.model)(num_classes=args.num_classes)
+    torch.cuda.set_device(0)
+    model.cuda()
+
     # Set up fake data
     datasets = []
     for _ in range(100):
@@ -281,13 +285,12 @@ if __name__ == '__main__':
     data_index = 0
 
     for i in range(iteration+warmup):
-        data = trainer.data_iter()
+        #data = trainer.data_iter()
 
-        global data_index
-        # times = time.time()
+        times = time.time()
         data = datasets[data_index%len(datasets)]
-        # logger.info("Dataload time: %.10f" % (time.time() - times))
-        # times = time.time()
+        logger.info("Iter: %d, Dataload time: %.10f" % (i, time.time() - times))
+        times = time.time()
         data_index += 1
         # optimizer.zero_grad()
         output = model(data)
@@ -296,8 +299,9 @@ if __name__ == '__main__':
         loss = F.cross_entropy(output, target)
         # print("Main process. begin backward()\n")
 
-        # logger.info("Backward time: %.10f" % (time.time() - times))
-        # times = time.time()
+        logger.info("Iter: %d, Forward time: %.10f" % (i, time.time() - times))
+        times = time.time()
+  
         # print("Main process. end backward()\n")
         # optimizer.step()
         # logger.info("Communication and updating time: %.10f" % (time.time() - times))
@@ -306,16 +310,25 @@ if __name__ == '__main__':
         # outputs = trainer.net(inputs)
         # loss = trainer.criterion(outputs, labels)
         torch.cuda.synchronize()
-
+        times = time.time()
+ 
         if i >= warmup:
             p.start()
         loss.backward()
+        logger.info("Iter: %d, Backward time: %.10f" % (i, time.time() - times))
+
         torch.cuda.synchronize()
     layerwise_times, sum_total = p.get_layerwise_times()
     seq_keys = p.get_backward_seq_keys()
     p.stop()
     seq_keys[::-1], layerwise_times[::-1], p.get_backward_key_sizes()[::-1]
-    logger.info(seq_keys[::-1], layerwise_times[::-1], p.get_backward_key_sizes()[::-1])
+    logger.info("seq_keys: %s" % seq_keys[::-1])
+    logger.info("layerwise_times: %s" % layerwise_times[::-1])
+    logger.info("backward_key_sizes: %s" % p.get_backward_key_sizes()[::-1])
+    logger.info("total backward_times in profiling: %f" % np.sum(layerwise_times[::-1]) )
+
+
+
 
 
 

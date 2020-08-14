@@ -50,13 +50,11 @@ export PATH=$CUDA_HOME/bin:$PATH
 echo $BYTEPS_TRACE_DIR
 echo $CUDA_HOME
 #bpslaunch python3 /home/esetstore/yxwang/byteps/example/pytorch/benchmark_byteps.py --model alexnet --batch-size $batch_size --num-iters $num_iters
-bpslaunch python3 benchmark_byteps.py --same $same --model $model --whole-grad $whole_grad --DMLC-PS ${DMLC_PS_ROOT_URI} --nworkers $n_worker --nservers $n_server --batch-size $batch_size --num-iters $num_iters --worker-id $worker_id
+#bpslaunch python3 benchmark_byteps.py --same $same --model $model --whole-grad $whole_grad --DMLC-PS ${DMLC_PS_ROOT_URI} --nworkers $n_worker --nservers $n_server --batch-size $batch_size --num-iters $num_iters --worker-id $worker_id
 if [ $whole_grad ];then
-    bpslaunch python3 benchmark_byteps.py --same $same --model $model --whole-grad $whole_grad --DMLC-PS ${DMLC_PS_ROOT_URI} --nworkers $n_worker --nservers $n_server --batch-size $batch_size --num-iters $num_iters --worker-id $worker_id
-i   whole_grad_path=whole_grad
+    bpslaunch python3 benchmark_byteps.py --same $same --model $model --whole-grad --DMLC-PS ${DMLC_PS_ROOT_URI} --nworkers $n_worker --nservers $n_server --batch-size $batch_size --num-iters $num_iters --worker-id $worker_id
 else
     bpslaunch python3 benchmark_byteps.py --same $same --model $model --DMLC-PS ${DMLC_PS_ROOT_URI} --nworkers $n_worker --nservers $n_server --batch-size $batch_size --num-iters $num_iters --worker-id $worker_id
-i   whole_grad_path=layerwise
 fi
 
 

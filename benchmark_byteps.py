@@ -9,6 +9,12 @@ from torchvision import models
 #import byteps.torch as bps
 import torch as t
 print(t.version.cuda)
+import timeit
+import time
+import numpy as np
+import os, sys
+import logging
+
 
 # Benchmark settings
 parser = argparse.ArgumentParser(description='PyTorch Synthetic Benchmark',
@@ -70,12 +76,6 @@ if not args.whole_grad:
 else:
     print("whole_grad")
     import bpstorch__init__2 as bps
-import timeit
-import time
-import numpy as np
-import os, sys
-import logging
-
 
 if args.whole_grad:
     relative_path = './bps_whole_grad'
